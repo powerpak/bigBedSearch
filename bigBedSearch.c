@@ -20,7 +20,7 @@
 #include "zlibFace.h"
 #include "bigBedPrefixSearch.h"
 
-char *field = "name";
+char *fields = NULL;
 int maxItems = -1;
 
 void usage()
@@ -32,14 +32,15 @@ errAbort(
     "   bigBedSearch file.bb query output.bed\n"
     "options:\n"
     "   -maxItems=N - if set, restrict output to first N items\n"
-    "   -field=fieldName - use index on field name, default is \"name\"\n"
+    "   -fields=fieldList - use index on field fieldName, default is to search all\n"
+    "       indexed fields in the order they were saved. Can be a comma separated list.\n"
     );
 }
 
 /* Command line validation table. */
 static struct optionSpec options[] = {
    {"maxItems", OPTION_INT},
-   {"field", OPTION_STRING},
+   {"fields", OPTION_STRING},
    {NULL, 0},
 };
 
@@ -51,13 +52,28 @@ void bigBedSearch(char *bigBedFile, char *query, char *outFile)
 struct bbiFile *bbi = bigBedFileOpen(bigBedFile);
 FILE *f = mustOpen(outFile, "w");
 struct lm *lm = lmInit(0);
-struct bigBedInterval *intervalList;
+struct bigBedInterval *intervalList, *interval;
 int fieldIx;
-struct bptFile *bpt = bigBedOpenExtraIndex(bbi, field, &fieldIx);
+struct slName *fieldList = slNameListFromString(fields, ',');
+struct slName *currIndex, *extraIndices;
 
-intervalList = bigBedPrefixQuery(bbi, bpt, fieldIx, query, maxItems, lm);
+if (fields != NULL)
+    extraIndices = fieldList;
+else
+    extraIndices = bigBedListExtraIndexes(bbi);
 
-bigBedIntervalListToBedFile(bbi, intervalList, f);
+for (currIndex = extraIndices; currIndex != NULL && maxItems != 0; currIndex = currIndex->next)
+    {
+    struct bptFile *bpt = bigBedOpenExtraIndex(bbi, currIndex->name, &fieldIx);
+    intervalList = bigBedPrefixQuery(bbi, bpt, fieldIx, query, maxItems, lm);
+    int intervalListCount = 0;
+    
+    if (maxItems > 0)
+        maxItems -= slCount(intervalList);
+    
+    bigBedIntervalListToBedFile(bbi, intervalList, f);    
+    }
+
 carefulClose(&f);
 }
 
@@ -69,7 +85,7 @@ optionInit(&argc, argv, options);
 if (argc != 4)
     usage();
 maxItems = optionInt("maxItems", maxItems);
-field = optionVal("field", field);
+fields = optionVal("fields", fields);
 bigBedSearch(argv[1], argv[2], argv[3]);
 return 0;
 }
