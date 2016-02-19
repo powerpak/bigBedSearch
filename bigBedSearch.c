@@ -45,7 +45,8 @@ static struct optionSpec options[] = {
 
 
 void bigBedSearch(char *bigBedFile, char *query, char *outFile)
-/* bigBedNamedItems - Extract item(s) of given name(s) from bigBed. */
+/* bigBedSearch - Search bigBedFile on its extraIndices and write to outFile
+    in BED format the rows that have an indexed field prefixed by the query */
 {
 struct bbiFile *bbi = bigBedFileOpen(bigBedFile);
 FILE *f = mustOpen(outFile, "w");
