@@ -55,12 +55,13 @@ struct lm *lm = lmInit(0);
 struct bigBedInterval *intervalList, *interval;
 int fieldIx;
 struct slName *fieldList = slNameListFromString(fields, ',');
-struct slName *currIndex, *extraIndices;
+struct slName *currIndex, *extraIndices = bigBedListExtraIndexes(bbi);
+
+if (slCount(extraIndices) == 0)
+    errAbort("%s has no indexes", bigBedFile);
 
 if (fields != NULL)
     extraIndices = fieldList;
-else
-    extraIndices = bigBedListExtraIndexes(bbi);
 
 for (currIndex = extraIndices; currIndex != NULL && maxItems != 0; currIndex = currIndex->next)
     {
