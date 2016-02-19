@@ -52,7 +52,7 @@ void bigBedSearch(char *bigBedFile, char *query, char *outFile)
 struct bbiFile *bbi = bigBedFileOpen(bigBedFile);
 FILE *f = mustOpen(outFile, "w");
 struct lm *lm = lmInit(0);
-struct bigBedInterval *intervalList, *interval;
+struct bigBedInterval *intervalList;
 int fieldIx;
 struct slName *fieldList = slNameListFromString(fields, ',');
 struct slName *currIndex, *extraIndices = bigBedListExtraIndexes(bbi);
@@ -67,7 +67,6 @@ for (currIndex = extraIndices; currIndex != NULL && maxItems != 0; currIndex = c
     {
     struct bptFile *bpt = bigBedOpenExtraIndex(bbi, currIndex->name, &fieldIx);
     intervalList = bigBedPrefixQuery(bbi, bpt, fieldIx, query, maxItems, lm);
-    int intervalListCount = 0;
     
     if (maxItems > 0)
         maxItems -= slCount(intervalList);
