@@ -16,6 +16,15 @@ If you want HTTPS to work, either make sure `/usr/include/openssl` is available,
 
 Run `bigBedSearch` with no arguments to see the usage statement.
 
+    $ ./bigBedSearch
+    bigBedSearch - Search for items that begin with the given name in a bigBed file
+    usage:
+       bigBedSearch file.bb query output.bed
+    options:
+       -maxItems=N - if set, restrict output to first N items
+       -fields=fieldList - search on this field name (OR field names, separated by commas.)
+            Default is to search all indexed fields in the order they were saved.
+
 ## License
 
 All files under `lib/` and `include/` are copied from the `kent/src/lib` and `kent/src/inc` directories of the [kent.git source repository][kent.git] for the UCSC Genome Browser, which are "freely available for all uses," including commercial use, according to [UCSC][ucsclicense]. They have only been modified here to disable functionality not needed for this project (grep for `TRP_EXCISION`). Be aware that many other parts of the kent.git repository are not free for commercial use.
