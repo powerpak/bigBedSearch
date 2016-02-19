@@ -1,10 +1,10 @@
 # bigBedSearch
 
-The [bigBed file format][bb], a binary format for describing range features on sequences that is optimized for access over a network, was updated after its [initial publication][bioinf] to include extra B-Plus Tree indices in the very last section of the file. These indices allow an application to search for features by the text content of various columns in the (uncompressed) BED format. This can enable a genome browser to have a search feature that offers possible matches by name or other feature metadata to a user query. The [UCSC Genome Browser][ucsc] offers this feature within Track Hubs.
+The [bigBed file format][bb], a binary format for describing range features on sequences that is optimized for access over a network, was updated after its [initial publication][bioinf] to include extra B+ tree indices in the very last section of the file. These indices allow an application to search for features by the text content of various field in the (uncompressed) BED data. This can enable a genome browser to search for features by name, such as the [UCSC Genome Browser][ucsc] allows within Track Hubs. The `bigBedNamedItems` command line utility [available from UCSC][bbni] also allows searching these indices, but only for exact matches and on one column at a time.
 
-The `bigBedNamedItems` command line utility, available in the [UCSC utility binaries directory][bbni], allows searching of these B-Plus Tree indices, but only for exact matches on one column. This project provides the command line utility `bigBedSearch`, which is equivalent to `bigBedNamedItems` in that it selectively returns BED lines from a bigBed file that matches a keyword, but it will match on **prefixes** as well as exact matches, and can search all indexed columns at once. Like `bigBedNamedItems`, it can operate efficiently on remote files only accessible over HTTP(S).
+`bigBedSearch` is equivalent to `bigBedNamedItems` in that it selectively returns BED lines from a bigBed file that matches a keyword, but it will match on *prefixes* as well as exact matches, and can search all indexed columns at once (or a certain fields in a specified order). Like `bigBedNamedItems`, it can operate efficiently on remote files only accessible over HTTP(S).
 
-In order for these indices to be included in a bigBed file, it **must** be created with the `-extraIndex` option specified, [as described here][bbex]. Otherwise, this utility will never return results.
+In order for these indices to be present in a bigBed file, it **must** have been created with the `-extraIndex` option for `bedToBigBed` enabled, [as described here][bbex]. Otherwise, this utility will return an error.
 
 ## Installation
 
