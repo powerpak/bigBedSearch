@@ -32,8 +32,8 @@ errAbort(
     "   bigBedSearch file.bb query output.bed\n"
     "options:\n"
     "   -maxItems=N - if set, restrict output to first N items\n"
-    "   -fields=fieldList - use index on field fieldName, default is to search all\n"
-    "       indexed fields in the order they were saved. Can be a comma separated list.\n"
+    "   -fields=fieldList - search on this field name (OR field names, separated by commas.)\n"
+    "        Default is to search all indexed fields in the order they were saved.\n"
     );
 }
 
