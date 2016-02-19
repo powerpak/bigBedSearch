@@ -22,8 +22,8 @@ Run `bigBedSearch` with no arguments to see the usage statement.
        bigBedSearch file.bb query output.bed
     options:
        -maxItems=N - if set, restrict output to first N items
-       -fields=fieldList - search on this field name (OR field names, separated by commas.)
-            Default is to search all indexed fields in the order they were saved.
+       -fields=fieldList - search on this field name (OR field names, separated by commas).
+            Default is to search all indexes, in the order they were saved.
 
 ## License
 
