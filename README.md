@@ -27,9 +27,15 @@ Run `bigBedSearch` with no arguments to see the usage statement.
 
 ## License
 
-All files under `lib/` and `include/` are copied from the `kent/src/lib` and `kent/src/inc` directories of the [kent.git source repository][kent.git] for the UCSC Genome Browser, which are "freely available for all uses," including commercial use, according to [UCSC][ucsclicense]. They have only been modified here to disable functionality not needed for this project (grep for `TRP_EXCISION`). Be aware that many other parts of the kent.git repository are not free for commercial use.
+All files under `lib/` and `include/` are copied from the `kent/src/lib` and `kent/src/inc` directories of the [kent.git source repository][kent.git] for the UCSC Genome Browser, which are "freely available for all uses," including commercial use, according to [UCSC][ucsclicense]. They have only been modified here to disable functionality not needed for this project (grep for `TRP_EXCISION`). Be aware that many other parts of the [kent.git][] repository are not free for commercial use.
 
-The `*.c` files in the root directory and files in `src/` are written by Theodore Pak, with components adapted from the aforementioned "freely available for all uses" area of kent.git; all new contributions are released under the MIT license (see LICENSE).
+- Note: I did made one modification to `lib/https.c` to fix a bug where SIGPIPE was prematurely terminating the process.
+
+The `*.c` files in the root directory and files in `src/` are written by Theodore Pak, with components adapted from the aforementioned "freely available for all uses" area of [kent.git][]; any such new contributions are released under the MIT license (see LICENSE).
+
+## Extra goodies
+
+`make extra` will compile some of the other big* utilities, found in `extra` and copied from `kent/src/utils` in [kent.git][]. This may be useful if you'd like to compile them against additional modifications in `lib/`. These utilities are also "freely available for all uses" according to [UCSC][ucsclicense].
 
 [bb]: https://genome.ucsc.edu/goldenPath/help/bigBed.html
 [bioinf]: https://bioinformatics.oxfordjournals.org/content/26/17/2204.long

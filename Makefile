@@ -1,4 +1,5 @@
 A = bigBedSearch
+EXTRA = bigBedToBed bigBedInfo bigBedNamedItems bigBedSummary bigWigInfo bigWigSummary
 
 # The following deactivates certain parts of lib/*.c that we don't need.
 # They are all marked with #ifndef lines with the TRP_EXCISION symbol.
@@ -123,30 +124,28 @@ _OBJ = asParse.o bbiRead.o cirTree.o errAbort.o hmmstats.o linefile.o \
 	localmem.o pipeline.o sqlNum.o zlibFace.o base64.o bits.o dnautil.o hash.o https.o \
 	net.o portimpl.o tokenizer.o basicBed.o cheapcgi.o dystring.o hex.o internet.o obscure.o \
 	rangeTree.o udc.o sqlList.o binRange.o mime.o osunix.o memalloc.o dlist.o intExp.o kxTok.o \
-	wildcmp.o
-extraObjects = $(patsubst %,lib/%,$(_OBJ))
-extraObjects += src/bigBedPrefixSearch.o
+	wildcmp.o bwgQuery.o
+libObjects = $(patsubst %,lib/%,$(_OBJ))
+libObjects += src/bigBedPrefixSearch.o
 
 O = ${A}.o
-objects = ${O} ${extraObjects}
+objects = ${O} ${libObjects}
 
+extraObjects = $(patsubst %,extra/%.o,$(EXTRA))
 
-${BINDIR}/${A}${EXE}: ${DEPLIBS} ${O} ${extraObjects}
+${BINDIR}/${A}${EXE}: ${DEPLIBS} ${O} ${libObjects}
 	${CC} ${COPT} -o ${BINDIR}/${A}${EXE} ${objects} ${LINKLIBS} ${L}
 	${STRIP} ${BINDIR}/${A}${EXE}
+
+${BINDIR}/$(EXTRA)${EXE}: ${DEPLIBS} ${extraObjects} ${libObjects}
+	${CC} ${COPT} -o $@ ${objects} ${LINKLIBS} ${L}
+	${STRIP} $@
 
 ${BINDIR}:
 	${MKDIR} ${BINDIR}
 
-compile:: ${DEPLIBS} ${O} ${extraObjects}
-	${CC} ${COPT} ${CFLAGS} -o ${A}${EXE} ${objects} ${LINKLIBS} ${L}
-
-install:: compile
-	rm -f ${BINDIR}/${A}${EXE}
-	cp -p ${A}${EXE} ${BINDIR}/${A}${EXE}
-	${STRIP} ${A}${EXE} ${BINDIR}/${A}${EXE}
-	rm -f ${O} ${A}${EXE}
+extra:: ${BINDIR}/$(EXTRA)${EXE}
 
 clean::
-	rm -f ${O} ${extraObjects} ${A}${EXE}
+	rm -f ${O} ${libObjects} ${extraObjects} ${EXTRA} ${A}${EXE}
 
