@@ -5,3 +5,10 @@
 *.ex
 core.*
 bigBedSearch
+bigBedInfo
+bigBedToBed
+bigBedSummary
+bigBedNamedItems
+bigWigInfo
+bigWigSummary
+
