@@ -138,7 +138,7 @@ ${BINDIR}/${A}${EXE}: ${DEPLIBS} ${O} ${libObjects}
 	${STRIP} ${BINDIR}/${A}${EXE}
 
 ${BINDIR}/$(EXTRA)${EXE}: ${DEPLIBS} ${extraObjects} ${libObjects}
-	${CC} ${COPT} -o $@ ${objects} ${LINKLIBS} ${L}
+	${CC} ${COPT} -o $@ extra/$(patsubst ${EXE},,$(@F)).o ${libObjects} ${LINKLIBS} ${L}
 	${STRIP} $@
 
 ${BINDIR}:
