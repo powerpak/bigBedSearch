@@ -2,7 +2,7 @@ A = bigBedSearch
 EXTRA = bigBedToBed bigBedInfo bigBedNamedItems bigBedSummary bigWigInfo bigWigSummary
 
 # The following deactivates certain parts of lib/*.c that we don't need.
-# They are all marked with #ifndef lines with the TRP_EXCISION symbol.
+# They are all marked with #ifndef/#ifdef lines with the TRP_EXCISION symbol.
 HG_DEFS = -DTRP_EXCISION
 
 ifeq (${BINDIR},)

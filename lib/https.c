@@ -373,9 +373,11 @@ params->hostName = cloneString(hostName);
 params->port = port;
 
 socketpair(AF_UNIX, SOCK_STREAM, 0, params->sv);
+#ifdef TRP_EXCISION
 /* Since this socketpair is a pipe, and the far side may write after we close our
    end raising a SIGPIPE signal, we prevent SIGPIPE from terminating the program */
 netBlockBrokenPipes();
+#endif
 
 int rc;
 rc = pthread_create(&params->thread, NULL, netConnectHttpsThread, (void *)params);
