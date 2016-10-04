@@ -31,6 +31,7 @@ errAbort(
     "usage:\n"
     "   bigBedSearch file.bb query output.bed\n"
     "options:\n"
+    "   -udcDir=/dir/to/cache - place to put cache for remote bigBed/bigWigs\n"
     "   -maxItems=N - if set, restrict output to first N items\n"
     "   -fields=fieldList - search on this field name (OR field names, separated by commas).\n"
     "        Default is to search all indexes, in the order they were saved.\n"
@@ -39,9 +40,10 @@ errAbort(
 
 /* Command line validation table. */
 static struct optionSpec options[] = {
-   {"maxItems", OPTION_INT},
-   {"fields", OPTION_STRING},
-   {NULL, 0},
+    {"udcDir", OPTION_STRING},
+    {"maxItems", OPTION_INT},
+    {"fields", OPTION_STRING},
+    {NULL, 0},
 };
 
 
@@ -84,6 +86,7 @@ int main(int argc, char *argv[])
 optionInit(&argc, argv, options);
 if (argc != 4)
     usage();
+udcSetDefaultDir(optionVal("udcDir", udcDefaultDir()));
 maxItems = optionInt("maxItems", maxItems);
 fields = optionVal("fields", fields);
 bigBedSearch(argv[1], argv[2], argv[3]);
