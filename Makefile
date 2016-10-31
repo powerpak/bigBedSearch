@@ -53,11 +53,11 @@ ifeq (${USE_SSL},)
 endif
 
 ifeq (${USE_SSL},1)
-	ifneq (${SSL_DIR}, "/usr/include/openssl")
+	ifneq (${SSLDIR}, "/usr/include/openssl")
 		ifneq ($(UNAME_S),Darwin)
-			L += -L${SSL_DIR}/lib
+			L += -L${SSLDIR}/lib
 		endif
-			HG_INC += -I${SSL_DIR}/include
+			HG_INC += -I${SSLDIR}/include
 	endif
 	L += -lssl -lcrypto
 	HG_DEFS += -DUSE_SSL
